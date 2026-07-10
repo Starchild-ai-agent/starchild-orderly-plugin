@@ -1,0 +1,9 @@
+{
+  "pluginId": "starchild-ai-assistant",
+  "name": "Starchild AI Assistant",
+  "version": "1.0.0",
+  "description": "Embed Starchild AI assistant into your Orderly DEX — chat with AI to query your Orderly account positions and orders.",
+  "author": "Starchild",
+  "tags": ["ai", "assistant", "trading", "analytics"],
+  "usage": "Install and add to OrderlyAppProvider plugins array. Users can sign in to Starchild and chat with an AI assistant to query Orderly positions and orders."
+}

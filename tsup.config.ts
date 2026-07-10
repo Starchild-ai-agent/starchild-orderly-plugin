@@ -1,0 +1,23 @@
+import { defineConfig } from "tsup";
+
+export default defineConfig({
+  entry: ["src/index.tsx"],
+  format: ["cjs", "esm"],
+  dts: true,
+  splitting: false,
+  sourcemap: true,
+  clean: true,
+  external: [
+    "react",
+    "react-dom",
+    "react/jsx-runtime",
+    "zustand",
+    "use-sync-external-store",
+    "@orderly.network/hooks",
+    "@orderly.network/i18n",
+    "@orderly.network/plugin-core",
+    "@orderly.network/ui",
+  ],
+  treeshake: true,
+  minify: false,
+});
