@@ -1,6 +1,6 @@
 {
   "name": "starchild-orderly-plugin",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Embed Starchild AI assistant into your Orderly DEX — chat with AI to query your Orderly account positions and orders.",
   "type": "module",
   "main": "./dist/index.cjs",

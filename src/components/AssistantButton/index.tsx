@@ -8,6 +8,7 @@ const DEFAULT_SIZE = 64;
 const EDGE_ZONE = 8;
 
 type InteractionMode = "idle" | "drag" | "resize";
+type ResizeEdge = { left: boolean; top: boolean };
 
 /**
  * Floating button that opens the Starchild AI chat panel.
@@ -29,6 +30,7 @@ export const AssistantButton: React.FC = () => {
   const livePos = useRef({ x: 0, y: 0 });
   const liveSize = useRef(DEFAULT_SIZE);
   const dragStart = useRef({ mouseX: 0, mouseY: 0, elX: 0, elY: 0, startSize: 0 });
+  const resizeEdge = useRef<ResizeEdge>({ left: false, top: false });
 
   // Keep livePos/liveSize in sync with state
   useEffect(() => {
@@ -112,6 +114,17 @@ export const AssistantButton: React.FC = () => {
       elY: livePos.current.y,
       startSize: liveSize.current,
     };
+    // Detect which edge the resize started from
+    if (onEdge) {
+      const p = livePos.current;
+      const s = liveSize.current;
+      const relX = e.clientX - p.x;
+      const relY = e.clientY - p.y;
+      resizeEdge.current = {
+        left: relX < s / 2,
+        top: relY < s / 2,
+      };
+    }
     // Capture pointer on the button element (not SVG children)
     btnRef.current?.setPointerCapture(e.pointerId);
     e.preventDefault();
@@ -140,12 +153,29 @@ export const AssistantButton: React.FC = () => {
       const el = btnRef.current;
       if (el) el.style.cursor = "grabbing";
     } else if (mode.current === "resize") {
-      const delta = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+      // Determine effective delta based on which edge the resize started from.
+      // Dragging away from center = grow, dragging toward center = shrink.
+      // Left/top edge: dragging left/up (negative dx/dy) = grow → invert sign
+      // Right/bottom edge: dragging right/down (positive dx/dy) = grow → keep sign
+      const rawDelta = Math.abs(dx) > Math.abs(dy) ? dx : dy;
+      const edge = resizeEdge.current;
+      const primaryIsX = Math.abs(dx) > Math.abs(dy);
+      const invertX = primaryIsX && edge.left;
+      const invertY = !primaryIsX && edge.top;
+      const delta = (invertX || invertY) ? -rawDelta : rawDelta;
+
       const newSize = Math.max(MIN_SIZE, Math.min(MAX_SIZE, dragStart.current.startSize + delta));
+      const sizeDiff = newSize - dragStart.current.startSize;
+
+      // Adjust position: when resizing from left/top edge, shift position to keep opposite edge anchored
+      let newX = dragStart.current.elX;
+      let newY = dragStart.current.elY;
+      if (edge.left) newX = dragStart.current.elX - sizeDiff;
+      if (edge.top) newY = dragStart.current.elY - sizeDiff;
+
       liveSize.current = newSize;
       applyDOMSize(newSize);
-      // Re-clamp position
-      const clamped = clampXY(livePos.current.x, livePos.current.y, newSize);
+      const clamped = clampXY(newX, newY, newSize);
       livePos.current = clamped;
       applyDOMPos(clamped.x, clamped.y);
     }
