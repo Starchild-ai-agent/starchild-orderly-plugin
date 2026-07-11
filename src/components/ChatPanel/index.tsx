@@ -1,17 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { usePanelStore } from "../../store";
 
-/**
- * Base URL for the Starchild web app.
- * Production: https://iamstarchild.com
- * Override via window.__STARCHILD_BASE_URL__ for local development.
- */
-const STARCHILD_BASE_URL =
-  (typeof window !== "undefined" &&
-    (window as any).__STARCHILD_BASE_URL__) ||
-  "https://iamstarchild.com";
-
-const STARCHILD_URL = STARCHILD_BASE_URL;
 const PANEL_WIDTH = 448;
 
 /**
@@ -19,7 +8,11 @@ const PANEL_WIDTH = 448;
  * Slides in from the right side of the viewport.
  * No header, no border — full-height iframe only.
  */
-export const ChatPanel: React.FC<{ className?: string }> = ({ className }) => {
+export const ChatPanel: React.FC<{
+  className?: string;
+  baseUrl?: string;
+  zIndex?: number;
+}> = ({ className, baseUrl = "https://iamstarchild.com", zIndex = 9999 }) => {
   const isOpen = usePanelStore((s) => s.isOpen);
   const close = usePanelStore((s) => s.close);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -61,7 +54,7 @@ export const ChatPanel: React.FC<{ className?: string }> = ({ className }) => {
         bottom: 0,
         width: PANEL_WIDTH,
         maxWidth: "90vw",
-        zIndex: 9999,
+        zIndex,
         transform: isOpen ? "translateX(0)" : `translateX(100%)`,
         transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
         display: "flex",
@@ -77,7 +70,7 @@ export const ChatPanel: React.FC<{ className?: string }> = ({ className }) => {
           Always render iframe to preserve login state when panel is hidden. */}
       <div style={{ flex: 1, overflow: "hidden" }}>
         <iframe
-          src={STARCHILD_URL}
+          src={baseUrl}
           title="Starchild AI Assistant"
           style={{
             width: "100%",

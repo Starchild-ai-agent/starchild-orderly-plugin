@@ -1,6 +1,6 @@
 {
   "name": "starchild-orderly-plugin",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Embed Starchild AI assistant into your Orderly DEX — chat with AI to query your Orderly account positions and orders.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -20,7 +20,8 @@
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup && tailwindcss -i ./tailwind.css -o ./dist/styles.css",
-    "prepublishOnly": "pnpm build"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "pnpm typecheck && pnpm build"
   },
   "keywords": [
     "orderly",
@@ -33,7 +34,6 @@
   "license": "MIT",
   "peerDependencies": {
     "@orderly.network/hooks": ">=2.10.1",
-    "@orderly.network/i18n": ">=2.10.1",
     "@orderly.network/plugin-core": ">=2.10.1",
     "@orderly.network/ui": ">=2.10.1",
     "react": ">=18",
@@ -41,7 +41,6 @@
     "zustand": ">=4.5.0"
   },
   "devDependencies": {
-    "@orderly.network/i18n": "^3.1.2",
     "@orderly.network/plugin-core": "^3.1.2",
     "@orderly.network/ui": "^3.1.2",
     "@types/react": "^18",

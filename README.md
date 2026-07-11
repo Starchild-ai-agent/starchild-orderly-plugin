@@ -10,6 +10,7 @@ Embed [Starchild AI](https://iamstarchild.com) assistant into your [Orderly Netw
 - **Dark theme** — designed to match Orderly's default dark UI
 - **Keyboard accessible** — press `Escape` to close the chat panel
 - **Draggable & resizable button** — drag the floating button anywhere on screen, scroll wheel or edge-drag to resize (16px–128px)
+- **Configurable** — customize base URL and z-index via plugin options
 
 ## Installation
 
@@ -42,6 +43,9 @@ import "starchild-orderly-plugin/styles.css";
 ```tsx
 registerStarchildPlugin({
   className: "my-custom-panel",    // Custom CSS class
+  baseUrl: "https://iamstarchild.com",  // Custom Starchild URL
+  buttonZIndex: 9998,             // z-index for floating button
+  panelZIndex: 9999,               // z-index for chat panel
 })
 ```
 
@@ -65,7 +69,6 @@ When users open the panel, they can sign in to Starchild and interact with an AI
 |---|---|
 | `@orderly.network/plugin-core` | `>=2.10.1` |
 | `@orderly.network/ui` | `>=2.10.1` |
-| `@orderly.network/i18n` | `>=2.10.1` |
 | `@orderly.network/hooks` | `>=2.10.1` |
 | `react` | `>=18` |
 | `react-dom` | `>=18` |
@@ -82,19 +85,9 @@ Returns a plugin registration function compatible with Orderly SDK's plugin syst
 | Property | Type | Default | Description |
 |---|---|---|---|
 | `className` | `string` | — | Custom CSS class for the chat panel container |
-| `title` | `string` | — | Custom title for the chat panel |
-
-### `LocaleProvider`
-
-Optional React component that registers Starchild plugin translations with the Orderly i18n system.
-
-```tsx
-import { LocaleProvider } from "starchild-orderly-plugin";
-
-<LocaleProvider>
-  <App />
-</LocaleProvider>
-```
+| `baseUrl` | `string` | `https://iamstarchild.com` | Base URL for the Starchild web app |
+| `buttonZIndex` | `number` | `9998` | z-index for the floating button |
+| `panelZIndex` | `number` | `9999` | z-index for the chat panel |
 
 ## Development
 
@@ -107,6 +100,9 @@ pnpm dev
 
 # Build
 pnpm build
+
+# Type check
+pnpm typecheck
 ```
 
 ## License

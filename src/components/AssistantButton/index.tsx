@@ -16,7 +16,7 @@ type ResizeEdge = { left: boolean; top: boolean };
  * Performance: during drag/resize, position is updated via direct DOM manipulation
  * (no React re-renders). State is synced only on pointer-up.
  */
-export const AssistantButton: React.FC = () => {
+export const AssistantButton: React.FC<{ zIndex?: number }> = ({ zIndex = 9998 }) => {
   const open = usePanelStore((s) => s.open);
   const isOpen = usePanelStore((s) => s.isOpen);
 
@@ -251,7 +251,7 @@ export const AssistantButton: React.FC = () => {
         position: "fixed",
         left: pos.x,
         top: pos.y,
-        zIndex: 9998,
+        zIndex,
         width: size,
         height: size,
         padding: 0,

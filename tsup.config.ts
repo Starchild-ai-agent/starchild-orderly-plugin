@@ -14,7 +14,6 @@ export default defineConfig({
     "zustand",
     "use-sync-external-store",
     "@orderly.network/hooks",
-    "@orderly.network/i18n",
     "@orderly.network/plugin-core",
     "@orderly.network/ui",
   ],

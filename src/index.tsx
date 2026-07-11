@@ -6,5 +6,4 @@
  */
 
 export { registerStarchildPlugin } from "./plugin";
-export { LocaleProvider } from "./i18n/provider";
 export type { StarchildPluginOptions } from "./types/plugin";

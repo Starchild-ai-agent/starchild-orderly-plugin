@@ -1,8 +1,21 @@
 import React from "react";
-import { createInterceptor } from "@orderly.network/plugin-core";
+import { createInterceptor, type OrderlySDK } from "@orderly.network/plugin-core";
 import type { StarchildPluginOptions } from "./types/plugin";
 import { AssistantButton } from "./components/AssistantButton";
 import { ChatPanel } from "./components/ChatPanel";
+
+/** Default base URL for the Starchild web app */
+const DEFAULT_BASE_URL = "https://iamstarchild.com";
+
+/** Default z-index values */
+const DEFAULT_BUTTON_Z_INDEX = 9998;
+const DEFAULT_PANEL_Z_INDEX = 9999;
+
+/** Interceptor target paths (must match SDK exactly, case-sensitive) */
+const TARGETS = {
+  MAIN_MENUS: "Layout.MainMenus",
+  TRADING_DESKTOP: "Trading.Layout.Desktop",
+} as const;
 
 /**
  * Register the Starchild AI Assistant plugin with the Orderly SDK.
@@ -19,9 +32,14 @@ import { ChatPanel } from "./components/ChatPanel";
  * ```
  */
 export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
-  const { className } = options;
+  const {
+    className,
+    baseUrl = DEFAULT_BASE_URL,
+    buttonZIndex = DEFAULT_BUTTON_Z_INDEX,
+    panelZIndex = DEFAULT_PANEL_Z_INDEX,
+  } = options;
 
-  return (SDK: any) => {
+  return (SDK: OrderlySDK) => {
     SDK.registerPlugin({
       id: "starchild-ai-assistant",
       name: "Starchild AI Assistant",
@@ -29,20 +47,20 @@ export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
       orderlyVersion: ">=2.10.1",
       interceptors: [
         createInterceptor(
-          "Layout.MainMenus",
+          TARGETS.MAIN_MENUS,
           (Original: React.ComponentType<any>, props: any) => (
             <>
               <Original {...props} />
-              <AssistantButton />
+              <AssistantButton zIndex={buttonZIndex} />
             </>
           )
         ),
         createInterceptor(
-          "Trading.Layout.Desktop",
+          TARGETS.TRADING_DESKTOP,
           (Original: React.ComponentType<any>, props: any) => (
             <>
               <Original {...props} />
-              <ChatPanel className={className} />
+              <ChatPanel className={className} baseUrl={baseUrl} zIndex={panelZIndex} />
             </>
           )
         ),
