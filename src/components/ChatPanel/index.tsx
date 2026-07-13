@@ -1,12 +1,46 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import { usePanelStore } from "../../store";
 
 const PANEL_WIDTH = 448;
+const EMBED_SOURCE = "orderly-plugin";
+
+/**
+ * Build the iframe URL for Starchild embed mode.
+ * Always appends source=orderly-plugin.
+ *
+ * Freshness policy:
+ * - Panel open/close is pure show/hide; the iframe is NOT remounted on toggle.
+ * - A fresh load happens when the parent page closes and reopens (full page
+ *   lifecycle remounts this component).
+ * - starchild-web embed cold-start checks /version.json and force-updates SW
+ *   when the deployed version differs — that is what guarantees the latest shell.
+ * - `_t` only helps avoid browser HTTP cache of the navigation request; it does
+ *   not bypass SW navigateFallback by itself.
+ */
+function buildIframeSrc(baseUrl: string): string {
+  try {
+    const url = new URL(baseUrl);
+    if (!url.searchParams.has("source")) {
+      url.searchParams.set("source", EMBED_SOURCE);
+    }
+    url.searchParams.set("_t", String(Date.now()));
+    return url.toString();
+  } catch {
+    // Fallback if baseUrl is not a valid absolute URL
+    const sep = baseUrl.includes("?") ? "&" : "?";
+    return `${baseUrl}${sep}source=${EMBED_SOURCE}&_t=${Date.now()}`;
+  }
+}
 
 /**
  * Collapsible side panel containing the Starchild AI chat iframe.
  * Slides in from the right side of the viewport.
  * No header, no border — full-height iframe only.
+ *
+ * Lifecycle:
+ * - Show/hide panel: CSS transform only; keep the same iframe instance and session.
+ * - Parent page close → reopen: component remounts naturally; iframe loads once
+ *   for that page session; web embed cold-start may force SW update if version changed.
  */
 export const ChatPanel: React.FC<{
   className?: string;
@@ -16,6 +50,9 @@ export const ChatPanel: React.FC<{
   const isOpen = usePanelStore((s) => s.isOpen);
   const close = usePanelStore((s) => s.close);
   const panelRef = useRef<HTMLDivElement>(null);
+
+  // Stable for the parent-page session. Rebuild only if baseUrl prop changes.
+  const iframeSrc = useMemo(() => buildIframeSrc(baseUrl), [baseUrl]);
 
   // Close panel on Escape key
   useEffect(() => {
@@ -66,11 +103,10 @@ export const ChatPanel: React.FC<{
       aria-label="Starchild AI Assistant"
       aria-hidden={!isOpen}
     >
-      {/* Iframe container — full height, no header, no border.
-          Always render iframe to preserve login state when panel is hidden. */}
+      {/* Long-lived iframe for the parent-page session; panel only show/hides. */}
       <div style={{ flex: 1, overflow: "hidden" }}>
         <iframe
-          src={baseUrl}
+          src={iframeSrc}
           title="Starchild AI Assistant"
           style={{
             width: "100%",
