@@ -1,6 +1,6 @@
 # starchild-orderly-plugin
 
-Let Starchild [[iamstarchild.com]](https://iamstarchild.com) keep your users more informed and engaged so they trade more successfully and have a better user experience:
+Let [Starchild](https://iamstarchild.com) keep your users more informed and engaged so they trade more successfully and have a better user experience:
 
 ## Features
 
