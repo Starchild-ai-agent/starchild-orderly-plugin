@@ -1,16 +1,17 @@
 # starchild-orderly-plugin
 
-Embed [Starchild AI](https://iamstarchild.com) assistant into your [Orderly Network](https://orderly.network) DEX. Chat with AI to query your Orderly account positions, orders, and trading analytics.
+Let Starchild [[iamstarchild.com]](https://iamstarchild.com) keep your users more informed and engaged so they trade more successfully and have a better user experience:
 
 ## Features
 
-- **Zero configuration** — just install and add to your Orderly plugins array
-- **AI-powered trading assistant** — ask questions about your positions, orders, and portfolio
-- **Seamless integration** — injects a floating chat button and collapsible side panel into your Orderly DEX
-- **Dark theme** — designed to match Orderly's default dark UI
-- **Keyboard accessible** — press `Escape` to close the chat panel
-- **Draggable & resizable button** — drag the floating button anywhere on screen, scroll wheel or edge-drag to resize (16px–128px)
-- **Configurable** — customize base URL and z-index via plugin options
+- **Zero configuration**: install and add to your Orderly plugins array
+- **Personal AI agent**: users can analyze positions, research markets across chains, and make more informed decisions without leaving the trading UI
+- **80+ premium skills built in**: the agent comes loaded with Coinglass, CoinGecko, DeFiLlama, DeBank, TwelveData, TAAPI, and more, with no extra integration work
+- **Seamless integration**: injects a floating chat button and collapsible side panel into your Orderly DEX
+- **Dark theme**: designed to match Orderly's default dark UI
+- **Keyboard accessible**: press Escape to close the chat panel
+- **Draggable and resizable button**: drag the floating button anywhere on screen, scroll wheel or edge-drag to resize (16px to 128px)
+- **Configurable**: customize base URL and z-index via plugin options
 
 ## Installation
 
