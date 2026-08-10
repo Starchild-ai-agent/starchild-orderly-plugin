@@ -1,4 +1,5 @@
 import React from "react";
+import { createRoot } from "react-dom/client";
 import { createInterceptor, type OrderlySDK } from "@orderly.network/plugin-core";
 import type { StarchildPluginOptions } from "./types/plugin";
 import { AssistantButton } from "./components/AssistantButton";
@@ -14,11 +15,17 @@ const DEFAULT_PANEL_Z_INDEX = 9999;
 /** Interceptor target paths (must match SDK exactly, case-sensitive) */
 const TARGETS = {
   MAIN_MENUS: "Layout.MainMenus",
-  TRADING_DESKTOP: "Trading.Layout.Desktop",
 } as const;
+
+/** DOM container ID for the ChatPanel portal */
+const PORTAL_CONTAINER_ID = "starchild-chat-panel-root";
 
 /**
  * Register the Starchild AI Assistant plugin with the Orderly SDK.
+ *
+ * The AssistantButton is injected via the MainMenus interceptor.
+ * The ChatPanel is mounted once via setup() into document.body using a React
+ * Portal root, so it survives page navigation without reloading the iframe.
  *
  * @example
  * ```tsx
@@ -43,7 +50,7 @@ export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
     SDK.registerPlugin({
       id: "starchild-ai-assistant",
       name: "Starchild AI Assistant",
-      version: "1.0.0",
+      version: "1.2.3",
       orderlyVersion: ">=2.10.1",
       interceptors: [
         createInterceptor(
@@ -55,16 +62,21 @@ export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
             </>
           )
         ),
-        createInterceptor(
-          TARGETS.TRADING_DESKTOP,
-          (Original: React.ComponentType<any>, props: any) => (
-            <>
-              <Original {...props} />
-              <ChatPanel className={className} baseUrl={baseUrl} zIndex={panelZIndex} />
-            </>
-          )
-        ),
       ],
+      setup: () => {
+        // Mount ChatPanel once into document.body so it survives page nav.
+        // The panel's visibility is controlled by Zustand (usePanelStore).
+        let container = document.getElementById(PORTAL_CONTAINER_ID);
+        if (!container) {
+          container = document.createElement("div");
+          container.id = PORTAL_CONTAINER_ID;
+          document.body.appendChild(container);
+        }
+        const root = createRoot(container);
+        root.render(
+          <ChatPanel className={className} baseUrl={baseUrl} zIndex={panelZIndex} />
+        );
+      },
       onError: (error: Error) => {
         console.error("[Starchild Plugin] Error:", error);
       },
