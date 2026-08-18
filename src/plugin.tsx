@@ -8,6 +8,9 @@ import { ChatPanel } from "./components/ChatPanel";
 /** Default base URL for the Starchild web app */
 const DEFAULT_BASE_URL = "https://iamstarchild.com";
 
+/** Plugin version — injected into iframe URL so clawd can version-gate prompts */
+const PLUGIN_VERSION = "1.3.0";
+
 /** Default z-index values */
 const DEFAULT_BUTTON_Z_INDEX = 9998;
 const DEFAULT_PANEL_Z_INDEX = 9999;
@@ -38,13 +41,17 @@ const PORTAL_CONTAINER_ID = "starchild-chat-panel-root";
  * </OrderlyAppProvider>
  * ```
  */
-export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
+export function registerStarchildPlugin(options: StarchildPluginOptions) {
   const {
     className,
     baseUrl = DEFAULT_BASE_URL,
     buttonZIndex = DEFAULT_BUTTON_Z_INDEX,
     panelZIndex = DEFAULT_PANEL_Z_INDEX,
+    getOrderlyCredentials,
+    hideLogo,
+    logoUrl,
   } = options;
+  const pluginVersion = PLUGIN_VERSION;
 
   return (SDK: OrderlySDK) => {
     SDK.registerPlugin({
@@ -74,7 +81,15 @@ export function registerStarchildPlugin(options: StarchildPluginOptions = {}) {
         }
         const root = createRoot(container);
         root.render(
-          <ChatPanel className={className} baseUrl={baseUrl} zIndex={panelZIndex} />
+          <ChatPanel
+            className={className}
+            baseUrl={baseUrl}
+            zIndex={panelZIndex}
+            getOrderlyCredentials={getOrderlyCredentials}
+            hideLogo={hideLogo}
+            logoUrl={logoUrl}
+            pluginVersion={pluginVersion}
+          />
         );
       },
       onError: (error: Error) => {
