@@ -6,4 +6,9 @@
  */
 
 export { registerStarchildPlugin } from "./plugin";
-export type { StarchildPluginOptions } from "./types/plugin";
+export type { StarchildCredentialsProvider } from "./credentials/provider";
+export type {
+  OrderlyCredentialsRequest,
+  OrderlyCredentialsResult,
+  StarchildPluginOptions,
+} from "./types/plugin";

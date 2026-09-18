@@ -1,0 +1,51 @@
+{
+  "type": "object",
+  "properties": {
+    "className": {
+      "type": "string",
+      "description": "Custom class name for the chat panel container"
+    },
+    "title": {
+      "type": "string",
+      "description": "Custom title displayed in the chat panel header"
+    },
+    "hideLogo": {
+      "type": "boolean",
+      "description": "Hide the default brand/logo in the chat panel header (default: false)."
+    },
+    "logoUrl": {
+      "type": "string",
+      "description": "Replace the default brand with a custom logo image URL."
+    },
+    "baseUrl": {
+      "type": "string",
+      "description": "Base URL for the Starchild web app. Defaults to https://iamstarchild.com"
+    },
+    "buttonZIndex": {
+      "type": "number",
+      "description": "z-index for the floating button (default: 9998)"
+    },
+    "panelZIndex": {
+      "type": "number",
+      "description": "z-index for the chat panel (default: 9999)"
+    },
+    "tradingAuthorization": {
+      "type": "boolean",
+      "description": "Set to `false` to disable the built-in one-click authorization flow.\nDefaults to `true`. Ignored when `getOrderlyCredentials` is provided."
+    },
+    "brokerId": {
+      "type": "string",
+      "description": "Overrides the `brokerId` read from the host's Orderly config store."
+    },
+    "networkId": {
+      "type": "string",
+      "description": "Overrides the `networkId` read from the host's Orderly config store.",
+      "enum": [
+        "mainnet",
+        "testnet"
+      ]
+    }
+  },
+  "required": [],
+  "additionalProperties": false
+}

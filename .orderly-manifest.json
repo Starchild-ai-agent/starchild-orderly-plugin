@@ -1,9 +1,11 @@
 {
+  "npmName": "starchild-orderly-plugin",
   "pluginId": "starchild-ai-assistant",
-  "name": "Starchild AI Assistant",
-  "version": "1.0.0",
-  "description": "Embed Starchild AI assistant into your Orderly DEX — chat with AI to query your Orderly account positions and orders.",
-  "author": "Starchild",
-  "tags": ["ai", "assistant", "trading", "analytics"],
-  "usage": "Install and add to OrderlyAppProvider plugins array. Users can sign in to Starchild and chat with an AI assistant to query Orderly positions and orders."
+  "repoUrl": "https://github.com/Starchild-ai-agent/starchild-orderly-plugin",
+  "tags": ["AI", "Widget", "Trading", "Analytics"],
+  "storybookUrl": null,
+  "storybookTooltip": null,
+  "usagePrompt": "Install `starchild-orderly-plugin` to embed the Starchild AI assistant (floating chat button + collapsible side panel) into an Orderly DEX. Setup: (1) `npm install starchild-orderly-plugin`; (2) import `registerStarchildPlugin` from \"starchild-orderly-plugin\" and add `import \"starchild-orderly-plugin/styles.css\"` once at the app root; (3) register it on `OrderlyAppProvider` via `plugins={[registerStarchildPlugin()]}`. One-click trading authorization is enabled by default: the plugin renders a headless credentials bridge inside the provider tree, reads the connected account's Orderly key from the SDK key store (`useKeyStore`) and seals it with Starchild's RSA public key before it leaves the page; users click \"Authorize Trading\" in the chat panel. Options (all optional): `tradingAuthorization: false` to disable authorization, `brokerId`/`networkId` overrides for non-standard config stores, `baseUrl`, `hideLogo`, `logoUrl`, `buttonZIndex`, `panelZIndex`, `className`, or a custom `getOrderlyCredentials` callback which takes precedence over the built-in bridge. Requires an Orderly SDK v3 host (`@orderly.network/* >= 3.0.0`) that renders the `Layout.MainMenus` slot; hosts must resolve `@orderly.network/*` to a single copy (dedupe) to avoid duplicate React contexts. After a user authorizes, Starchild's backend writes `ORDERLY_*` env vars for that user's agent so it can query positions, orders and balances and place trades.",
+  "createdAt": "2026-07-10T00:00:00.000Z",
+  "updatedAt": "2026-09-18T00:00:00.000Z"
 }

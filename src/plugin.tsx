@@ -4,21 +4,18 @@ import { createInterceptor, type OrderlySDK } from "@orderly.network/plugin-core
 import type { StarchildPluginOptions } from "./types/plugin";
 import { AssistantButton } from "./components/AssistantButton";
 import { ChatPanel } from "./components/ChatPanel";
+import { CredentialsBridge } from "./components/CredentialsBridge";
+import { getCredentials } from "./credentials/provider";
 
 /** Default base URL for the Starchild web app */
 const DEFAULT_BASE_URL = "https://iamstarchild.com";
 
 /** Plugin version — injected into iframe URL so clawd can version-gate prompts */
-const PLUGIN_VERSION = "1.3.0";
+const PLUGIN_VERSION = "1.4.0";
 
 /** Default z-index values */
 const DEFAULT_BUTTON_Z_INDEX = 9998;
 const DEFAULT_PANEL_Z_INDEX = 9999;
-
-/** Interceptor target paths (must match SDK exactly, case-sensitive) */
-const TARGETS = {
-  MAIN_MENUS: "Layout.MainMenus",
-} as const;
 
 /** DOM container ID for the ChatPanel portal */
 const PORTAL_CONTAINER_ID = "starchild-chat-panel-root";
@@ -41,7 +38,9 @@ const PORTAL_CONTAINER_ID = "starchild-chat-panel-root";
  * </OrderlyAppProvider>
  * ```
  */
-export function registerStarchildPlugin(options: StarchildPluginOptions) {
+export function registerStarchildPlugin(
+  options: StarchildPluginOptions = {},
+) {
   const {
     className,
     baseUrl = DEFAULT_BASE_URL,
@@ -50,22 +49,35 @@ export function registerStarchildPlugin(options: StarchildPluginOptions) {
     getOrderlyCredentials,
     hideLogo,
     logoUrl,
+    tradingAuthorization,
+    brokerId,
+    networkId,
   } = options;
   const pluginVersion = PLUGIN_VERSION;
+
+  // A custom callback always wins; otherwise the built-in bridge supplies
+  // credentials unless explicitly disabled.
+  const useCredentialsBridge =
+    !getOrderlyCredentials && tradingAuthorization !== false;
+  const credentialsProvider =
+    getOrderlyCredentials ?? (useCredentialsBridge ? getCredentials : undefined);
 
   return (SDK: OrderlySDK) => {
     SDK.registerPlugin({
       id: "starchild-ai-assistant",
       name: "Starchild AI Assistant",
-      version: "1.2.3",
-      orderlyVersion: ">=2.10.1",
+      version: "1.4.0",
+      orderlyVersion: ">=3.0.0",
       interceptors: [
         createInterceptor(
-          TARGETS.MAIN_MENUS,
+          "Layout.MainMenus",
           (Original: React.ComponentType<any>, props: any) => (
             <>
               <Original {...props} />
               <AssistantButton zIndex={buttonZIndex} />
+              {useCredentialsBridge && (
+                <CredentialsBridge brokerId={brokerId} networkId={networkId} />
+              )}
             </>
           )
         ),
@@ -85,7 +97,7 @@ export function registerStarchildPlugin(options: StarchildPluginOptions) {
             className={className}
             baseUrl={baseUrl}
             zIndex={panelZIndex}
-            getOrderlyCredentials={getOrderlyCredentials}
+            getOrderlyCredentials={credentialsProvider}
             hideLogo={hideLogo}
             logoUrl={logoUrl}
             pluginVersion={pluginVersion}

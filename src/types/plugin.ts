@@ -155,22 +155,24 @@ export interface StarchildPluginOptions {
   /** z-index for the chat panel (default: 9999) */
   panelZIndex?: number;
   /**
-   * **Required.** Host-injected callback for one-click trading authorization.
+   * Optional host-injected override for one-click trading authorization.
    *
-   * An "Authorize Trading" button appears in the chat panel. Clicking it
-   * triggers this callback, which should:
-   *   1. Generate or read the user's Orderly secret key (ed25519 private key, 32 bytes)
-   *   2. Optionally prompt the user's wallet to sign and register the access key
-   *   3. Encrypt the 32-byte secret key with `req.pubKey` using RSA-OAEP SHA-256
-   *   4. Return the base64 ciphertext + account info
-   *
-   * The plaintext Orderly secret key must NEVER be returned directly —
-   * only the RSA-encrypted ciphertext. The Starchild backend will decrypt it
-   * and derive the corresponding Orderly key (public key) automatically.
-   * See `OrderlyCredentialsRequest` above for full encryption instructions
-   * (browser & Node.js examples).
+   * When omitted, the plugin uses its built-in bridge, which reads the
+   * Orderly key from the host's SDK key store (`useKeyStore`) inside
+   * `OrderlyAppProvider`. Provide a callback only for custom key stores or
+   * custom consent/account-selection logic; it takes precedence over the
+   * built-in bridge.
    */
-  getOrderlyCredentials: (
+  getOrderlyCredentials?: (
     req: OrderlyCredentialsRequest,
   ) => Promise<OrderlyCredentialsResult>;
+  /**
+   * Set to `false` to disable the built-in one-click authorization flow.
+   * Defaults to `true`. Ignored when `getOrderlyCredentials` is provided.
+   */
+  tradingAuthorization?: boolean;
+  /** Overrides the `brokerId` read from the host's Orderly config store. */
+  brokerId?: string;
+  /** Overrides the `networkId` read from the host's Orderly config store. */
+  networkId?: "mainnet" | "testnet";
 }

@@ -1,6 +1,6 @@
 {
   "name": "starchild-orderly-plugin",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "Embed Starchild AI assistant into your Orderly DEX — chat with AI to query your Orderly account positions and orders.",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -15,12 +15,14 @@
     "./styles.css": "./dist/styles.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "configSchema.json"
   ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup && tailwindcss -i ./tailwind.css -o ./dist/styles.css",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
     "prepublishOnly": "pnpm typecheck && pnpm build"
   },
   "keywords": [
@@ -32,15 +34,19 @@
     "dex"
   ],
   "license": "MIT",
+  "dependencies": {
+    "bs58": "^6.0.0"
+  },
   "peerDependencies": {
-    "@orderly.network/hooks": ">=2.10.1",
-    "@orderly.network/plugin-core": ">=2.10.1",
-    "@orderly.network/ui": ">=2.10.1",
+    "@orderly.network/hooks": ">=3.0.0",
+    "@orderly.network/plugin-core": ">=3.0.0",
+    "@orderly.network/ui": ">=3.0.0",
     "react": ">=18",
     "react-dom": ">=18",
     "zustand": ">=4.5.0"
   },
   "devDependencies": {
+    "@orderly.network/hooks": "^3.1.2",
     "@orderly.network/plugin-core": "^3.1.2",
     "@orderly.network/ui": "^3.1.2",
     "@types/react": "^18",
@@ -50,6 +56,7 @@
     "tailwindcss": "^3.4.0",
     "tsup": "^8.0.0",
     "typescript": "^5.4.0",
+    "vitest": "^4.1.10",
     "zustand": "^4.5.0"
   }
 }
