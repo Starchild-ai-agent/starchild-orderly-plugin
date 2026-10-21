@@ -1,3 +1,8 @@
-@tailwind base;
+/*
+ * Intentionally no `@tailwind base`: Orderly One injects this stylesheet
+ * globally, and Tailwind's preflight would reset the host DEX's html/body/
+ * button/list styles. The plugin UI is inline-styled, so only prefixed
+ * utilities may be emitted here.
+ */
 @tailwind components;
 @tailwind utilities;

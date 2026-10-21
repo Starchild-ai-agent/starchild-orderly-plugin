@@ -10,5 +10,6 @@ export type { StarchildCredentialsProvider } from "./credentials/provider";
 export type {
   OrderlyCredentialsRequest,
   OrderlyCredentialsResult,
+  StarchildPluginConfig,
   StarchildPluginOptions,
 } from "./types/plugin";

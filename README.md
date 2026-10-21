@@ -25,6 +25,19 @@ pnpm add starchild-orderly-plugin
 yarn add starchild-orderly-plugin
 ```
 
+### Orderly One
+
+On an Orderly One DEX, install the plugin from the Builders Marketplace. The
+build is a self-contained ESM runtime bundle (only React and
+`@orderly.network/*` stay external), and Orderly One loads it with the host's
+import map and injects the stylesheet automatically — no manual
+`styles.css` import or `plugins` array entry is needed.
+
+### Build-time hosts
+
+For hosts that bundle plugins at build time, import and register the plugin as
+shown below.
+
 ## Usage
 
 Import and register the plugin in your Orderly app. One-click trading
@@ -175,7 +188,6 @@ Provided by any Orderly SDK v3 host app:
 | `@orderly.network/hooks` | `>=3.0.0` |
 | `react` | `>=18` |
 | `react-dom` | `>=18` |
-| `zustand` | `>=4.5.0` |
 
 ## API
 

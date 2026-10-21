@@ -4,11 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-dependencies:
-  bs58:
-    specifier: ^6.0.0
-    version: 6.0.0
-
 devDependencies:
   '@orderly.network/hooks':
     specifier: ^3.1.2
@@ -25,6 +20,9 @@ devDependencies:
   '@types/react-dom':
     specifier: ^18
     version: 18.3.7(@types/react@18.3.31)
+  bs58:
+    specifier: ^6.0.0
+    version: 6.0.0
   react:
     specifier: ^18
     version: 18.3.1
@@ -43,9 +41,6 @@ devDependencies:
   vitest:
     specifier: ^4.1.10
     version: 4.1.11(vite@8.3.0)
-  zustand:
-    specifier: ^4.5.0
-    version: 4.5.7(@types/react@18.3.31)(immer@10.2.0)(react@18.3.1)
 
 packages:
 
@@ -3275,7 +3270,7 @@ packages:
 
   /base-x@5.0.1:
     resolution: {integrity: sha512-M7uio8Zt++eg3jPj+rHMfCC+IuygQHHCOU+IYsVtik6FWjuYpVt/+MRKcgsAMHh8mMFAwnB+Bs+mTrFiXjMzKg==}
-    dev: false
+    dev: true
 
   /base64-js@1.5.1:
     resolution: {integrity: sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==}
@@ -3378,7 +3373,7 @@ packages:
     resolution: {integrity: sha512-PD0wEnEYg6ijszw/u8s+iI3H17cTymlrwkKhDhPZq+Sokl3AU4htyBFTjAeNAlCCmg0f53g6ih3jATyCKftTfw==}
     dependencies:
       base-x: 5.0.1
-    dev: false
+    dev: true
 
   /bs58check@2.1.2:
     resolution: {integrity: sha512-0TS1jicxdU09dwJMNZtVAfzPi6Q6QeN0pM1Fkzrjn+XYHvzMKPU3pHVpva+769iNVSfIYWf7LJ6WR+BuuMf8cA==}

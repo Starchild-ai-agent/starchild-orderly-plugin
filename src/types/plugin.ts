@@ -137,9 +137,13 @@ export interface OrderlyCredentialsResult {
 }
 
 /**
- * Configuration options for the Starchild AI Assistant plugin.
+ * JSON-configurable options for the Starchild AI Assistant plugin.
+ *
+ * This is the subset rendered in the Orderly One plugin settings form and
+ * derived into `configSchema.json`. Runtime-only options live on
+ * {@link StarchildPluginOptions}.
  */
-export interface StarchildPluginOptions {
+export interface StarchildPluginConfig {
   /** Custom class name for the chat panel container */
   className?: string;
   /** Custom title displayed in the chat panel header */
@@ -155,6 +159,21 @@ export interface StarchildPluginOptions {
   /** z-index for the chat panel (default: 9999) */
   panelZIndex?: number;
   /**
+   * Set to `false` to disable the built-in one-click authorization flow.
+   * Defaults to `true`. Ignored when `getOrderlyCredentials` is provided.
+   */
+  tradingAuthorization?: boolean;
+  /** Overrides the `brokerId` read from the host's Orderly config store. */
+  brokerId?: string;
+  /** Overrides the `networkId` read from the host's Orderly config store. */
+  networkId?: "mainnet" | "testnet";
+}
+
+/**
+ * Configuration options for the Starchild AI Assistant plugin.
+ */
+export interface StarchildPluginOptions extends StarchildPluginConfig {
+  /**
    * Optional host-injected override for one-click trading authorization.
    *
    * When omitted, the plugin uses its built-in bridge, which reads the
@@ -166,13 +185,4 @@ export interface StarchildPluginOptions {
   getOrderlyCredentials?: (
     req: OrderlyCredentialsRequest,
   ) => Promise<OrderlyCredentialsResult>;
-  /**
-   * Set to `false` to disable the built-in one-click authorization flow.
-   * Defaults to `true`. Ignored when `getOrderlyCredentials` is provided.
-   */
-  tradingAuthorization?: boolean;
-  /** Overrides the `brokerId` read from the host's Orderly config store. */
-  brokerId?: string;
-  /** Overrides the `networkId` read from the host's Orderly config store. */
-  networkId?: "mainnet" | "testnet";
 }

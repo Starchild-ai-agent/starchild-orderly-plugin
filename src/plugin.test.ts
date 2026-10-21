@@ -19,7 +19,7 @@ describe("registerStarchildPlugin", () => {
 
     expect(descriptors).toHaveLength(1);
     expect(descriptors[0].id).toBe("starchild-ai-assistant");
-    expect(descriptors[0].version).toBe("1.4.0");
+    expect(descriptors[0].version).toBe("1.4.1");
     expect(descriptors[0].orderlyVersion).toBe(">=3.0.0");
     expect(descriptors[0].interceptors).toHaveLength(1);
     expect(descriptors[0].interceptors[0].target).toBe("Layout.MainMenus");
